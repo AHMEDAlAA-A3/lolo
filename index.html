@@ -1,0 +1,830 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>إلى آلاء ❤️</title>
+    <style>
+        :root {
+            --bg-gradient: linear-gradient(135deg, #fff3f5 0%, #ffe5ec 50%, #ffc2d1 100%);
+            --primary-pink: #ff758f;
+            --deep-pink: #ff4d6d;
+            --rose-gold: #b76e79;
+            --cream: #fffdf9;
+            --glass-bg: rgba(255, 255, 255, 0.45);
+            --glass-border: rgba(255, 255, 255, 0.6);
+            --shadow: 0 12px 40px 0 rgba(255, 182, 193, 0.4);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            background: var(--bg-gradient);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            position: relative;
+            padding-bottom: 90px; /* مساحة للمشغل السفلي */
+        }
+
+        /* تأثيرات الخلفية السحرية */
+        .magic-bg {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        /* المشهد الافتتاحي اللطيف */
+        .intro-scene {
+            position: absolute;
+            z-index: 10;
+            text-align: center;
+            padding: 20px;
+            width: 100%;
+            max-width: 400px;
+            transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .intro-box {
+            background: rgba(255, 255, 255, 0.5);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            border: 1px solid var(--glass-border);
+            padding: 30px 20px;
+            border-radius: 24px;
+            box-shadow: var(--shadow);
+            animation: softBounce 3s infinite ease-in-out;
+        }
+        .intro-text-1 {
+            font-size: 1.6rem;
+            color: var(--deep-pink);
+            margin-bottom: 15px;
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeInUp 0.6s forwards ease-out;
+        }
+        .intro-text-2 {
+            font-size: 1.25rem;
+            color: var(--rose-gold);
+            line-height: 1.5;
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeInUp 0.6s forwards ease-out;
+            animation-delay: 1.4s;
+        }
+
+        /* منطقة اللعبة والكروت */
+        .game-container {
+            position: relative;
+            width: 320px;
+            height: 380px;
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 5;
+            perspective: 1200px;
+        }
+
+        .card-wrapper {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            transform-style: preserve-3d;
+            transition: transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.5s ease;
+            cursor: pointer;
+            display: none;
+        }
+
+        .card-wrapper.active {
+            display: block;
+            animation: cardAppear 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+        }
+
+        .card {
+            width: 100%;
+            height: 100%;
+            position: relative;
+            transform-style: preserve-3d;
+            transition: transform 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
+            border-radius: 30px;
+            box-shadow: var(--shadow);
+        }
+
+        .card-face {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            -webkit-backface-visibility: hidden;
+            border-radius: 30px;
+            border: 1px solid var(--glass-border);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 25px;
+            text-align: center;
+        }
+
+        /* الوجه الأمامي (السؤال) */
+        .card-front {
+            background: rgba(255, 255, 255, 0.6);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            color: #4a4a4a;
+        }
+        .card-front .icon {
+            font-size: 3.5rem;
+            margin-bottom: 20px;
+            animation: pulse 2s infinite;
+        }
+        .card-front h3 {
+            font-size: 1.35rem;
+            color: var(--rose-gold);
+            line-height: 1.6;
+            font-weight: 600;
+        }
+        .tap-hint {
+            font-size: 0.85rem;
+            color: var(--primary-pink);
+            margin-top: auto;
+            background: rgba(255, 255, 255, 0.4);
+            padding: 6px 15px;
+            border-radius: 20px;
+            animation: pulse 1.5s infinite;
+        }
+
+        /* الوجه الخلفي (الإجابة) */
+        .card-back {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            transform: rotateY(180deg);
+        }
+        .card-back h2 {
+            font-size: 2.8rem;
+            color: var(--deep-pink);
+            text-shadow: 0 4px 15px rgba(255, 77, 109, 0.25);
+            margin-bottom: 30px;
+            letter-spacing: 1px;
+        }
+        .next-btn {
+            background: linear-gradient(135deg, #ff758f, #ff4d6d);
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 20px;
+            font-size: 1rem;
+            font-weight: bold;
+            box-shadow: 0 6px 20px rgba(255, 77, 109, 0.4);
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .next-btn:active {
+            transform: scale(0.95);
+        }
+
+        .card-wrapper.flipped .card {
+            transform: rotateY(180deg);
+        }
+
+        /* المشهد النهائي والقلب العملاق */
+        .final-scene {
+            display: none;
+            text-align: center;
+            z-index: 5;
+            opacity: 0;
+            transform: scale(0.8);
+            transition: all 1s cubic-bezier(0.34, 1.56, 0.64, 1);
+            padding: 20px;
+            width: 100%;
+            max-width: 360px;
+        }
+        .glowing-heart-container {
+            position: relative;
+            width: 280px;
+            height: 260px;
+            margin: 0 auto 20px auto;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .giant-heart-svg {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            fill: var(--deep-pink);
+            filter: drop-shadow(0 0 25px rgba(255, 75, 143, 0.75));
+            animation: giantHeartbeat 1.4s infinite ease-in-out;
+        }
+        .heart-text {
+            position: relative;
+            z-index: 2;
+            color: white;
+            font-size: 2rem;
+            font-weight: bold;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.15);
+            animation: giantHeartbeatText 1.4s infinite ease-in-out;
+        }
+        .final-sub-box {
+            background: rgba(255, 255, 255, 0.55);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            border: 1px solid var(--glass-border);
+            padding: 20px;
+            border-radius: 24px;
+            box-shadow: var(--shadow);
+            color: var(--rose-gold);
+            font-size: 1.15rem;
+            line-height: 1.6;
+        }
+
+        /* مشغل موسيقى ذكي بستايل Spotify ممتاز وثابت في الأسفل */
+        .spotify-player {
+            position: fixed;
+            bottom: 60px;
+            left: 5%;
+            right: 5%;
+            width: 90%;
+            max-width: 380px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.65);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            border-radius: 24px;
+            padding: 12px 16px;
+            box-shadow: var(--shadow);
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            z-index: 100;
+            transition: all 0.3s ease;
+        }
+        .player-main {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width: 100%;
+        }
+        .album-art-zone {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .vinyl-container {
+            position: relative;
+            width: 46px;
+            height: 46px;
+        }
+        .vinyl-disc {
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle, #ffccd5 25%, #222 30%, #111 60%, #333 100%);
+            border-radius: 50%;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            animation: rotateVinyl 4s linear infinite;
+            animation-play-state: paused;
+        }
+        .vinyl-center {
+            width: 14px;
+            height: 14px;
+            background: var(--deep-pink);
+            border-radius: 50%;
+            border: 2px solid white;
+        }
+        .track-details {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        .track-title {
+            font-size: 0.95rem;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 2px;
+        }
+        /* بارات الصوت المتحركة */
+        .music-bars {
+            display: flex;
+            align-items: flex-end;
+            gap: 2px;
+            height: 14px;
+        }
+        .bar {
+            width: 3px;
+            height: 2px;
+            background-color: var(--primary-pink);
+            border-radius: 1px;
+            transition: height 0.2s ease;
+        }
+        /* تحريك البارات بالتناوب */
+        .spotify-player.playing .bar {
+            animation: bounceBar 0.8s ease-in-out infinite alternate;
+        }
+        .spotify-player.playing .bar:nth-child(2) { animation-delay: 0.15s; }
+        .spotify-player.playing .bar:nth-child(3) { animation-delay: 0.3s; }
+        .spotify-player.playing .bar:nth-child(4) { animation-delay: 0.45s; }
+
+        .player-controls {
+            display: flex;
+            align-items: center;
+        }
+        .play-btn {
+            background: var(--deep-pink);
+            border: none;
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            color: white;
+            font-size: 1.1rem;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            box-shadow: 0 4px 10px rgba(255, 77, 109, 0.3);
+            transition: transform 0.2s;
+        }
+        .play-btn:active { transform: scale(0.9); }
+
+        /* شريط تقدم الأغنية التفاعلي الكيوت */
+        .progress-container {
+            width: 100%;
+            height: 4px;
+            background: rgba(0, 0, 0, 0.06);
+            border-radius: 2px;
+            position: relative;
+            cursor: pointer;
+        }
+        .progress-bar {
+            width: 0%;
+            height: 100%;
+            background: linear-gradient(to left, var(--primary-pink), var(--deep-pink));
+            border-radius: 2px;
+            transition: width 0.1s linear;
+        }
+
+        /* تذييل الصفحة اللطيف */
+        footer {
+            position: fixed;
+            bottom: 15px;
+            font-size: 0.8rem;
+            color: var(--rose-gold);
+            opacity: 0.8;
+            z-index: 10;
+            font-weight: 500;
+        }
+
+        /* عناصر التأثيرات الحركية المتطايرة */
+        .floating-heart {
+            position: absolute;
+            color: var(--primary-pink);
+            pointer-events: none;
+            z-index: 2;
+            animation: floatUp 3.5s linear infinite;
+        }
+        .sparkle {
+            position: absolute;
+            background: radial-gradient(circle, #fff 10%, transparent 60%);
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 2;
+            animation: flicker 1.2s infinite ease-in-out;
+        }
+
+        /* الأنيميشن وجداول التحريك الاحترافية */
+        @keyframes fadeInUp {
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes softBounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-8px); }
+        }
+        @keyframes cardAppear {
+            0% { opacity: 0; transform: scale(0.8) rotate(-5deg); }
+            100% { opacity: 1; transform: scale(1) rotate(0deg); }
+        }
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); opacity: 0.8; }
+            50% { transform: scale(1.1); opacity: 1; }
+        }
+        @keyframes rotateVinyl {
+            100% { transform: rotate(-360deg); }
+        }
+        @keyframes bounceBar {
+            0% { height: 2px; }
+            100% { height: 14px; }
+        }
+        @keyframes giantHeartbeat {
+            0%, 100% { transform: scale(1); filter: drop-shadow(0 0 20px rgba(255, 75, 143, 0.6)); }
+            30% { transform: scale(1.06); filter: drop-shadow(0 0 35px rgba(255, 75, 143, 0.9)); }
+            60% { transform: scale(1.02); }
+        }
+        @keyframes giantHeartbeatText {
+            0%, 100% { transform: scale(1); }
+            30% { transform: scale(1.04); }
+            60% { transform: scale(1.01); }
+        }
+        @keyframes floatUp {
+            0% { transform: translateY(105vh) scale(0) rotate(0deg); opacity: 0; }
+            15% { opacity: 0.7; }
+            85% { opacity: 0.7; }
+            100% { transform: translateY(-10vh) scale(1.2) rotate(270deg); opacity: 0; }
+        }
+        @keyframes flicker {
+            0%, 100% { opacity: 0.3; transform: scale(0.6); }
+            50% { opacity: 1; transform: scale(1.2); }
+        }
+
+        /* تعديلات مخصصة لشاشات الجوال فائقة الصغر */
+        @media (max-width: 350px) {
+            .game-container { width: 285px; height: 350px; }
+            .card-back h2 { font-size: 2.3rem; }
+            .heart-text { font-size: 1.7rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ملف الصوت الأساسي للموقع -->
+    <audio id="main-audio" src="amr.mp3" loop></audio>
+
+    <div class="magic-bg" id="magic-bg"></div>
+
+    <!-- 1. المشهد الافتتاحي الترحيبي -->
+    <div class="intro-scene" id="intro-scene">
+        <div class="intro-box">
+            <div class="intro-text-1">عندي لعبة صغيرة ليكي 🤭❤️</div>
+            <div class="intro-text-2">افتحي الكروت واحدة واحدة وشوفي النتيجة بنفسك ✨</div>
+        </div>
+    </div>
+
+    <!-- 2. ساحة اللعبة الورقية المكدسة -->
+    <div class="game-container" id="game-container">
+        
+        <!-- كارت رقم 1 -->
+        <div class="card-wrapper active" id="cw1">
+            <div class="card">
+                <div class="card-face card-front" onclick="flipCard(this)">
+                    <div class="icon">❤️</div>
+                    <h3>مين أحمد بيحبها؟</h3>
+                    <div class="tap-hint">اضغطي للكشف عن الإجابة السحرية ✨</div>
+                </div>
+                <div class="card-face card-back">
+                    <h2>آلاء ❤️</h2>
+                    <button class="next-btn" onclick="nextCard(1)">السؤال التالي 🫶</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- كارت رقم 2 -->
+        <div class="card-wrapper" id="cw2">
+            <div class="card">
+                <div class="card-face card-front" onclick="flipCard(this)">
+                    <div class="icon">🫶</div>
+                    <h3>مين أحمد ميقدرش يستغنى عنها؟</h3>
+                    <div class="tap-hint">اضغطي للكشف عن الإجابة السحرية ✨</div>
+                </div>
+                <div class="card-face card-back">
+                    <h2>آلاء ❤️</h2>
+                    <button class="next-btn" onclick="nextCard(2)">السؤال التالي 🥹</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- كارت رقم 3 -->
+        <div class="card-wrapper" id="cw3">
+            <div class="card">
+                <div class="card-face card-front" onclick="flipCard(this)">
+                    <div class="icon">🥹</div>
+                    <h3>مين أحمد مش هاين عليه زعلها؟</h3>
+                    <div class="tap-hint">اضغطي للكشف عن الإجابة السحرية ✨</div>
+                </div>
+                <div class="card-face card-back">
+                    <h2>آلاء ❤️</h2>
+                    <button class="next-btn" onclick="nextCard(3)">السؤال التالي 🌎</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- كارت رقم 4 -->
+        <div class="card-wrapper" id="cw4">
+            <div class="card">
+                <div class="card-face card-front" onclick="flipCard(this)">
+                    <div class="icon">🌎</div>
+                    <h3>مين أحمد مستعد يعمل أي حاجة عشان يشوفها مبسوطة؟</h3>
+                    <div class="tap-hint">اضغطي للكشف عن الإجابة السحرية ✨</div>
+                </div>
+                <div class="card-face card-back">
+                    <h2>آلاء ❤️</h2>
+                    <button class="next-btn" onclick="nextCard(4)">السؤال التالي 🤍</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- كارت رقم 5 -->
+        <div class="card-wrapper" id="cw5">
+            <div class="card">
+                <div class="card-face card-front" onclick="flipCard(this)">
+                    <div class="icon">🤍</div>
+                    <h3>مين أحمد عمره ما هيقدر يبعد عنها؟</h3>
+                    <div class="tap-hint">اضغطي للكشف عن الإجابة السحرية ✨</div>
+                </div>
+                <div class="card-face card-back">
+                    <h2>آلاء ❤️</h2>
+                    <button class="next-btn" onclick="nextCard(5)">اضغطي هنا لآخر كارت 💌</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- الكارت الختامي المجمع -->
+        <div class="card-wrapper" id="cw-final">
+            <div class="card">
+                <div class="card-face card-front" style="background: rgba(255, 255, 255, 0.7);" onclick="flipCard(this)">
+                    <div class="icon">💌</div>
+                    <h3 style="color: var(--deep-pink); font-size: 1.2rem; line-height: 1.7;">
+                        يمكن الأسئلة كانت كتير…<br>بس الإجابة عمرها ما كانت غير واحدة.
+                    </h3>
+                    <div class="tap-hint">افتحي الرسالة الأخيرة 🥺❤️</div>
+                </div>
+                <div class="card-face card-back" style="background: rgba(255, 243, 245, 0.95);">
+                    <h2 style="font-size: 3.2rem;">آلاء ❤️</h2>
+                    <button class="next-btn" onclick="finishGame()">شوفي المفاجأة النهائية 🥰</button>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- 3. المشهد الختامي والقلب الكبير المشع -->
+    <div class="final-scene" id="final-scene">
+        <div class="glowing-heart-container">
+            <svg class="giant-heart-svg" viewBox="0 0 32 29.6">
+                <path d="M23.6,0c-3.4,0-6.3,2.7-7.6,5.6C14.7,2.7,11.8,0,8.4,0C3.8,0,0,3.8,0,8.4c0,9.4,9.5,11.9,16,21.2
+                c6.1-9.3,16-12.1,16-21.2C32,3.8,28.2,0,23.6,0z"/>
+            </svg>
+            <div class="heart-text">بحبك يا آلاء ❤️</div>
+        </div>
+        <div class="final-sub-box">
+            بس كان نفسي أقولها بطريقة كيوت 🤭❤️
+        </div>
+    </div>
+
+    <!-- 4. مشغل موسيقى Spotify مدمج واحترافي -->
+    <div class="spotify-player" id="spotify-player">
+        <div class="player-main">
+            <div class="album-art-zone">
+                <div class="vinyl-container">
+                    <div class="vinyl-disc" id="vinyl-disc">
+                        <div class="vinyl-center"></div>
+                    </div>
+                </div>
+                <div class="track-details">
+                    <span class="track-title">🎵 وانتي معايا</span>
+                    <div class="music-bars">
+                        <div class="bar"></div>
+                        <div class="bar"></div>
+                        <div class="bar"></div>
+                        <div class="bar"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="player-controls">
+                <button class="play-btn" id="play-btn" onclick="handlePlayerClick()">▶</button>
+            </div>
+        </div>
+        <div class="progress-container" id="progress-container" onclick="seekAudio(event)">
+            <div class="progress-bar" id="progress-bar"></div>
+        </div>
+    </div>
+
+    <footer>Made with ❤️ by Ahmed</footer>
+
+    <script>
+        const audio = document.getElementById('main-audio');
+        const playBtn = document.getElementById('play-btn');
+        const vinyl = document.getElementById('vinyl-disc');
+        const player = document.getElementById('spotify-player');
+        const progressBar = document.getElementById('progress-bar');
+        const progressContainer = document.getElementById('progress-container');
+
+        // تجهيز البيئة الصوتية ومحاولة التشغيل التلقائي الهادئ
+        window.addEventListener('DOMContentLoaded', () => {
+            audio.volume = 0.5;
+            
+            // محاولة التشغيل التلقائي فوراً
+            let playPromise = audio.play();
+            if (playPromise !== undefined) {
+                playPromise.then(() => {
+                    setPlayerPlaying(true);
+                }).catch(error => {
+                    console.log("Autoplay blocked. Audio will start on interaction.");
+                });
+            }
+
+            // تفعيل نظام الجزيئات الخلفية الطائرة
+            spawnAmbience();
+        });
+
+        // تشغيل الموسيقى عند أول تفاعل حركي في حال حظرها المتصفح
+        window.addEventListener('click', () => {
+            if(audio.paused && !audio.userDataTriggered) {
+                audio.play();
+                setPlayerPlaying(true);
+            }
+        }, { once: true });
+
+        function handlePlayerClick() {
+            audio.userDataTriggered = true; // تم التحريك برغبة المستخدم مباشرة
+            if (audio.paused) {
+                audio.play();
+                setPlayerPlaying(true);
+            } else {
+                audio.pause();
+                setPlayerPlaying(false);
+            }
+        }
+
+        function setPlayerPlaying(isPlaying) {
+            if(isPlaying) {
+                playBtn.innerText = "⏸";
+                vinyl.style.animationPlayState = "running";
+                player.classList.add('playing');
+            } else {
+                playBtn.innerText = "▶";
+                vinyl.style.animationPlayState = "paused";
+                player.classList.remove('playing');
+            }
+        }
+
+        // تحديث شريط التقدم بمرور الوقت
+        audio.addEventListener('timeupdate', () => {
+            const percentage = (audio.currentTime / audio.duration) * 100;
+            progressBar.style.width = percentage + '%';
+        });
+
+        // تصفح الأغنية عند الضغط على الخط الزمني
+        function seekAudio(e) {
+            const rect = progressContainer.getBoundingClientRect();
+            const clickPosition = (e.clientX - rect.left) / rect.width;
+            audio.currentTime = clickPosition * audio.duration;
+        }
+
+        // تحريك المشهد الافتتاحي وتدشين الكروت تلقائياً بعد مرور 3 ثوانٍ
+        setTimeout(() => {
+            const intro = document.getElementById('intro-scene');
+            const gameContainer = document.getElementById('game-container');
+            
+            intro.style.opacity = '0';
+            intro.style.transform = 'scale(0.9) translateY(-10px)';
+            
+            setTimeout(() => {
+                intro.style.display = 'none';
+                gameContainer.style.display = 'flex';
+            }, 800);
+        }, 3500);
+
+        // تدوير الكارت لإظهار الإجابة + إطلاق انفجار قلوب صغير ولطيف
+        function flipCard(frontElement) {
+            const wrapper = frontElement.closest('.card-wrapper');
+            if(!wrapper.classList.contains('flipped')) {
+                wrapper.classList.add('flipped');
+                explodeHearts(frontElement);
+                if(navigator.vibrate) navigator.vibrate(12); // اهتزاز فيزيائي خفيف داعم للهواتف
+            }
+        }
+
+        // الانتقال التلقائي للكروت التالية بسلاسة متناهية
+        function nextCard(currentNum) {
+            const currentWrapper = document.getElementById(`cw${currentNum}`);
+            const nextWrapper = document.getElementById(currentNum === 5 ? 'cw-final' : `cw${currentNum + 1}`);
+
+            // إخفاء الكارت الحالي بحركة طيران خفيفة ورقيقة
+            currentWrapper.style.transform = 'translateY(-120px) rotateX(20deg) scale(0.85)';
+            currentWrapper.style.opacity = '0';
+
+            setTimeout(() => {
+                currentWrapper.classList.remove('active');
+                nextWrapper.classList.add('active');
+            }, 400);
+        }
+
+        // نهاية اللعبة وظهور القلب العملاق البراق لـ آلاء
+        function finishGame() {
+            const finalWrapper = document.getElementById('cw-final');
+            finalWrapper.style.transform = 'scale(0.7) translateY(50px)';
+            finalWrapper.style.opacity = '0';
+
+            setTimeout(() => {
+                document.getElementById('game-container').style.display = 'none';
+                const finalScene = document.getElementById('final-scene');
+                finalScene.style.display = 'block';
+                
+                // عاصفة من القلوب المبهجة احتفالاً بالنهاية
+                triggerFinalConfetti();
+
+                setTimeout(() => {
+                    finalScene.style.opacity = '1';
+                    finalScene.style.transform = 'scale(1)';
+                }, 100);
+            }, 500);
+        }
+
+        // توليد تأثير الجزيئات اللامعة والقلوب في الخلفية لتعزيز الشعور اللطيف
+        function spawnAmbience() {
+            const bg = document.getElementById('magic-bg');
+            const decorativeAssets = ['❤️', '✨', '🌸', '🤍', '🧸'];
+
+            // قلوب طائرة مستمرة في الخلفية
+            setInterval(() => {
+                const heart = document.createElement('div');
+                heart.className = 'floating-heart';
+                heart.innerText = decorativeAssets[Math.floor(Math.random() * decorativeAssets.length)];
+                heart.style.left = Math.random() * 100 + 'vw';
+                const size = Math.random() * 16 + 12;
+                heart.style.fontSize = size + 'px';
+                heart.style.animationDuration = (Math.random() * 2.5 + 3.5) + 's';
+                
+                bg.appendChild(heart);
+                setTimeout(() => heart.remove(), 6000);
+            }, 500);
+
+            // نقاط البريق اللامعة الثابتة والمتحركة ناعماً
+            for(let i=0; i<25; i++) {
+                const sparkle = document.createElement('div');
+                sparkle.className = 'sparkle';
+                sparkle.style.width = sparkle.style.height = Math.random() * 6 + 4 + 'px';
+                sparkle.style.left = Math.random() * 100 + 'vw';
+                sparkle.style.top = Math.random() * 100 + 'vh';
+                sparkle.style.animationDelay = Math.random() * 1.5 + 's';
+                bg.appendChild(sparkle);
+            }
+        }
+
+        // تأثير انفجار القلوب الصغير التفاعلي عند النقر على الكروت
+        function explodeHearts(element) {
+            const bg = document.getElementById('magic-bg');
+            const rect = element.getBoundingClientRect();
+            const centerX = rect.left + rect.width / 2;
+            const centerY = rect.top + rect.height / 2;
+
+            for(let i=0; i<12; i++) {
+                const p = document.createElement('div');
+                p.className = 'floating-heart';
+                p.innerText = i % 2 === 0 ? '❤️' : '✨';
+                p.style.left = centerX + 'px';
+                p.style.top = centerY + 'px';
+                p.style.fontSize = '18px';
+                p.style.transition = 'all 0.8s cubic-bezier(0.25, 1, 0.5, 1)';
+                
+                bg.appendChild(p);
+
+                // إطلاق الجسيم في زاوية عشوائية حول الكارت
+                const angle = (i / 12) * Math.PI * 2 + (Math.random() * 0.4);
+                const distance = Math.random() * 80 + 60;
+                const targetX = Math.cos(angle) * distance;
+                const targetY = Math.sin(angle) * distance - 30; // رفع خفيف للأعلى
+
+                setTimeout(() => {
+                    p.style.transform = `translate(${targetX}px, ${targetY}px) scale(0.5)`;
+                    p.style.opacity = '0';
+                }, 20);
+
+                setTimeout(() => p.remove(), 800);
+            }
+        }
+
+        // زينة القلوب الاحتفالية المكثفة (Confetti) للمشهد الأخير
+        function triggerFinalConfetti() {
+            const bg = document.getElementById('magic-bg');
+            for (let i = 0; i < 50; i++) {
+                setTimeout(() => {
+                    const heart = document.createElement('div');
+                    heart.className = 'floating-heart';
+                    heart.innerText = i % 3 === 0 ? '🌸' : '❤️';
+                    heart.style.left = (Math.random() * 70 + 15) + 'vw';
+                    heart.style.fontSize = (Math.random() * 22 + 14) + 'px';
+                    heart.style.animation = 'floatUp 2.2s cubic-bezier(0.215, 0.610, 0.355, 1) forwards';
+                    bg.appendChild(heart);
+                    setTimeout(() => heart.remove(), 2300);
+                }, i * 35);
+            }
+        }
+    </script>
+</body>
+</html>
