@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>إلى آلاء ❤️</title>
+    <title> إلى آلاء نورعيني ❤️</title>
     <style>
         :root {
             --bg-gradient: linear-gradient(135deg, #fff3f5 0%, #ffe5ec 50%, #ffc2d1 100%);
@@ -31,13 +31,14 @@
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            overflow: hidden;
+            overflow-x: hidden;
+            overflow-y: auto;
             position: relative;
-            padding-bottom: 90px;
+            padding: 20px 20px 90px 20px;
         }
 
         .magic-bg {
-            position: absolute;
+            position: fixed;
             width: 100%;
             height: 100%;
             top: 0;
@@ -113,8 +114,10 @@
 
         .password-box .error-msg {
             color: var(--deep-pink);
-            font-size: 0.85rem;
-            margin-bottom: 10px;
+            font-size: 0.95rem;
+            font-weight: 600;
+            line-height: 1.4;
+            margin-bottom: 15px;
             display: none;
             animation: shake 0.4s ease-in-out;
         }
@@ -267,15 +270,15 @@
             opacity: 0;
             transform: scale(0.8);
             transition: all 1s cubic-bezier(0.34, 1.56, 0.64, 1);
-            padding: 20px;
+            padding: 20px 10px;
             width: 100%;
-            max-width: 360px;
+            max-width: 420px;
         }
         .glowing-heart-container {
             position: relative;
-            width: 280px;
-            height: 260px;
-            margin: 0 auto 20px auto;
+            width: 260px;
+            height: 240px;
+            margin: 0 auto 15px auto;
             display: flex;
             justify-content: center;
             align-items: center;
@@ -292,7 +295,7 @@
             position: relative;
             z-index: 2;
             color: white;
-            font-size: 2rem;
+            font-size: 1.8rem;
             font-weight: bold;
             animation: giantHeartbeatText 1.4s infinite ease-in-out;
         }
@@ -301,12 +304,32 @@
             backdrop-filter: blur(15px);
             -webkit-backdrop-filter: blur(15px);
             border: 1px solid var(--glass-border);
-            padding: 20px;
-            border-radius: 24px;
+            padding: 15px;
+            border-radius: 20px;
             box-shadow: var(--shadow);
             color: var(--rose-gold);
-            font-size: 1.15rem;
-            line-height: 1.6;
+            font-size: 1.1rem;
+            line-height: 1.5;
+            margin-bottom: 25px;
+        }
+
+        /* تنسيق الصورة النهائية */
+        .final-image-container {
+            width: 100%;
+            max-width: 360px;
+            margin: 0 auto;
+            border-radius: 24px;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            border: 4px solid rgba(255, 255, 255, 0.6);
+            background: rgba(255, 255, 255, 0.3);
+            backdrop-filter: blur(10px);
+            animation: softBounce 4s infinite ease-in-out;
+        }
+        .final-image-container img {
+            width: 100%;
+            height: auto;
+            display: block;
         }
 
         /* مشغل موسيقى Spotify مدمج */
@@ -450,7 +473,7 @@
             animation: floatUp 3.5s linear infinite;
         }
         .sparkle {
-            position: absolute;
+            position: fixed;
             background: radial-gradient(circle, #fff 10%, transparent 60%);
             border-radius: 50%;
             pointer-events: none;
@@ -514,9 +537,9 @@
     <div class="password-screen" id="password-screen">
         <div class="password-box">
             <div class="lock-icon">🔐</div>
-            <h2>اكتبي اسمك عشان تدخلي اللعبة ❤️</h2>
+            <h2>اكتبي اسمك عشان تدخلي اللعبة 🤭❤️</h2>
             <input type="text" id="pass-input" placeholder="اكتبي اسمك هنا..." autofocus>
-            <div class="error-msg" id="error-msg">اممم.. الاسم ده مش مسموح له يدخل اللعبة دي 🤭 انسخي اسمك صح!</div>
+            <div class="error-msg" id="error-msg">تؤ تؤ.. شكلك مش حبيبة أحمد ولا إيه؟ اتأكدي من اسمك يا بنتي! 🤨</div>
             <button class="next-btn" onclick="checkPassword()" style="width: 100%;">دخول ✨</button>
         </div>
     </div>
@@ -551,7 +574,7 @@
             <div class="card">
                 <div class="card-face card-front" onclick="flipCard(this)">
                     <div class="icon">🫶</div>
-                    <h3>مين أحمد ميقدرش يستغنى عنها؟</h3>
+                    <h3>مين أحمد ميقدرش يستغنى عنها？</h3>
                     <div class="tap-hint">اضغطي للكشف عن الإجابة السحرية ✨</div>
                 </div>
                 <div class="card-face card-back">
@@ -624,7 +647,7 @@
         </div>
     </div>
 
-    <!-- المشهد الختامي والقلب الكبير المشع -->
+    <!-- المشهد الختامي والقلب الكبير المشع + الصورة -->
     <div class="final-scene" id="final-scene">
         <div class="glowing-heart-container">
             <svg class="giant-heart-svg" viewBox="0 0 32 29.6">
@@ -634,7 +657,12 @@
             <div class="heart-text">بحبك يا آلاء ❤️</div>
         </div>
         <div class="final-sub-box">
-           متزعليش مني ي عمري❤️
+            بحبك ي نور عيني متزعليش مني❤️
+        </div>
+        
+        <!-- الصورة الختامية المضافة هنا -->
+        <div class="final-image-container">
+            <img src="1.png" alt="Our Childhood">
         </div>
     </div>
 
@@ -681,19 +709,17 @@
             spawnAmbience();
         });
 
-        // فحص الباسورد الذكي (يقبل: الاء، آلاء، بالهمزات أو بدونها، وبأية مسافات زائدة)
+        // فحص الباسورد - يقبل فقط الاء أو آلاء بدون أي سماحية زائدة
         function checkPassword() {
             const input = document.getElementById('pass-input').value.trim();
-            const allowedNames = ["الاء", "آلاء", "ألاء", "إلاء"];
+            const allowedNames = ["الاء", "آلاء"];
             const errorMsg = document.getElementById('error-msg');
 
             if (allowedNames.includes(input)) {
-                // إخفاء شاشة القفل بنعومة
                 const lockScreen = document.getElementById('password-screen');
                 lockScreen.style.opacity = '0';
                 lockScreen.style.transform = 'scale(1.1)';
                 
-                // بدء تشغيل الموسيقى فوراً بعد التفاعل الناجح
                 audio.play().then(() => {
                     setPlayerPlaying(true);
                 }).catch(e => console.log("Audio block bypass failed"));
@@ -705,13 +731,11 @@
                 }, 800);
             } else {
                 errorMsg.style.display = 'block';
-                // إعادة تشغيل أنميشن الاهتزاز عند الخطأ
                 errorMsg.style.animation = 'none';
                 setTimeout(() => errorMsg.style.animation = '', 10);
             }
         }
 
-        // دعم زر التثبيت الـ Enter من الكيبورد لتسهيل الدخول
         document.getElementById('pass-input').addEventListener('keypress', (e) => {
             if (e.key === 'Enter') checkPassword();
         });
@@ -721,7 +745,6 @@
             intro.style.display = 'block';
             setTimeout(() => intro.style.opacity = '1', 50);
 
-            // تفعيل الكروت تلقائياً بعد مشهد المقدمة بـ 3.5 ثانية
             setTimeout(() => {
                 const gameContainer = document.getElementById('game-container');
                 intro.style.opacity = '0';
